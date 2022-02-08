@@ -1,0 +1,8 @@
+*.pyc
+*.splite3
+.idea
+__pycache__
+*.log
+.venv
+medisa/*
+venv
