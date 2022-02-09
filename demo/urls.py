@@ -18,11 +18,19 @@ from django.contrib import admin
 
 from django.conf.urls import url
 from post import views as post_view
+from user import views as user_view
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
+    url(r'^$', post_view.post_list),
     url(r'^post/create/', post_view.post_create),
     url(r'^post/edit/', post_view.post_edit),
     url(r'^post/read/', post_view.post_read),
     url(r'^post/list/', post_view.post_list),
+
+
+    url(r'^user/login/', user_view.login),
+    url(r'^user/logout/', user_view.logout),
+    url(r'^user/register/', user_view.register),
+    url(r'^user/user_info/', user_view.user_info),
 ]
