@@ -1,8 +1,9 @@
+# coding: utf-8
 from math import ceil
 
 from django.core.cache import cache
 from django.shortcuts import render, redirect
-
+from post.helper import page_cacha
 # Create your views here.
 from .models import Post
 
@@ -47,13 +48,16 @@ def post_edit(request):
         return render(request, 'edit_post.html', {'post': post})
 
 
+@page_cacha(10)
 def post_read(request):
     post_id = int(request.GET.get('post_id'))
     key = 'post-%s' % post_id
     post = cache.get(key)
+    print("从缓存取数据---->", post)
     if post is None:
         post = Post.objects.get(id=post_id)
         cache.set(key, post)
+        print("从数据库取数据---->", post)
 
     return render(request, 'read_post.html', {'post': post})
 
