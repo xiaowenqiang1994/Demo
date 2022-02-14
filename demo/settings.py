@@ -143,4 +143,12 @@ CACHES = {
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 
+# 自定义redis
+REDIS = {
+    'host': '127.0.0.1',
+    'port': 6379,
+    'db': 0
+
+}
+
 

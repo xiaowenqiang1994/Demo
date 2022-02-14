@@ -1,9 +1,10 @@
 # coding: utf-8
 from math import ceil
+from redis import Redis
 
 from django.core.cache import cache
 from django.shortcuts import render, redirect
-from post.helper import page_cacha
+from post.helper import page_cacha, rds, get_top_n
 # Create your views here.
 from .models import Post
 
@@ -58,8 +59,13 @@ def post_read(request):
         post = Post.objects.get(id=post_id)
         cache.set(key, post)
         print("从数据库取数据---->", post)
-
+    rds.zincrby('ReadRank', post_id, 1)
     return render(request, 'read_post.html', {'post': post})
+
+
+def top10_post(request):
+    rand_data = get_top_n(1)
+    return render(request, 'top10.html', {'rand_data': rand_data})
 
 
 
