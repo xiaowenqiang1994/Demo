@@ -20,7 +20,7 @@ def page_cacha(timeout):
             if response is None:
                 response = view_func(request, *args, **kwargs)
                 cache.set(key, response, timeout)
-                return response
+            return response
         return wrap2
     return wrap1
 
