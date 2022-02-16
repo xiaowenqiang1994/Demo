@@ -15,7 +15,7 @@ def page_cacha(timeout):
         def wrap2(request, *args, **kwargs):
             key = 'Response-%s' % request.get_full_path()
             response = cache.get(key)
-            if view_func.__name__ == 'read_post':
+            if response and view_func.__name__ == 'read_post':
                 rds.zincrby('ReadRank', int(request.GET.get('post_id')), 1)
             if response is None:
                 response = view_func(request, *args, **kwargs)

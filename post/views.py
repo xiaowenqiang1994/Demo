@@ -6,7 +6,7 @@ from django.core.cache import cache
 from django.shortcuts import render, redirect
 from post.helper import page_cacha, rds, get_top_n
 # Create your views here.
-from .models import Post
+from .models import Post, Comment, Tag
 
 
 def post_list(request):
@@ -63,9 +63,31 @@ def post_read(request):
     return render(request, 'read_post.html', {'post': post})
 
 
+def delete_post(request):
+    post_id = int(request.GET.get('post_id'))
+    Post.objects.get(id=post_id).delete()
+    return redirect('/')
+
+
 def top10_post(request):
     rand_data = get_top_n(1)
     return render(request, 'top10.html', {'rand_data': rand_data})
+
+
+def comment(request):
+    if request.method == "POST":
+        name = request.POST.get('name')
+        content = request.POST.get('content')
+        pid = request.POST.get('post_id')
+        Comment.objects.create(pid=pid, name=name, content=content)
+        return redirect('/post/read/?post_id=%s' % pid)
+
+
+def tag_filter(request):
+    tag_id = int(request.GET.get('tag_id', 0))
+    tag = Tag.objects.filter(id=tag_id)
+    return render(request, 'post_list.html', {'posts': tag.posts()})
+
 
 
 
